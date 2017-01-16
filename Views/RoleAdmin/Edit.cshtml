@@ -1,0 +1,56 @@
+﻿@model Jasper.Models.RoleViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row">
+    <h2>Edit.</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Roles.</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.Name, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.Description, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="medium-offset-2 medium-10 columns">
+                    <input type="submit" value="Save" class="button" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+</div>
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/roleadmin-edit-bundle")
+}

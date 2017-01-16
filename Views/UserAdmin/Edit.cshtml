@@ -1,0 +1,58 @@
+﻿@model Jasper.Models.EditUserViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+<div class="row">
+
+    <h2>@ViewBag.Title.</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Edit User Form.</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.Email, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.Label("Roles", new { @class = "text-right middle" })
+                </div>
+                <span class="medium-10 columns">
+                    @foreach (var item in Model.RolesList)
+                    {
+                        <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                        @Html.Label(item.Value, new { @class = "control-label" })
+                    }
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="medium-offset-2 medium-10 columns">
+                    <input type="submit" value="Save" class="button" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+</div>
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/useradmin-edit-bundle")
+}

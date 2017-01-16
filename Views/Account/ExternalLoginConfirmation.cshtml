@@ -1,0 +1,43 @@
+﻿@using Jasper.Extensions
+@model Jasper.Models.ExternalLoginConfirmationViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="row">
+    <h2>@ViewBag.Title.</h2>
+    <h3>Associate your @ViewBag.LoginProvider account.</h3>
+
+    @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "externalLoginFormValidate", name = "externalLoginFormValidate", @class = "form-validate", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <h4>Association Form</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { })
+            <p class="text-info">
+                You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
+                Please enter a user name for this site below and click the Register button to finish
+                logging in.
+            </p>
+            <div class="row">
+                <div class="small-2 columns">
+                    @Html.LabelFor(m => m.Email, new { @class = "text-right middle" })
+                </div>
+                <div class="small-10 columns">
+                    @Html.TextBoxFor(m => m.Email, new { @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-offset-2 medium-10 columns">
+                    <input type="submit" class="button" value="Register" />
+                </div>
+            </div>
+    }
+</div>
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/account-externalloginconfirmation-bundle")
+}

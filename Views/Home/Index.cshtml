@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Welcome to Foundation";
+}
+
+<div ng-app="app">
+    <div ng-controller="MainCtrl">
+        <div class="row">
+            <div class="large-12 columns">
+                <ul class="tabs">
+                    @if (User.IsInRole("Assignee"))
+                    {
+                        <li ng-class="{ 'tabs-title': true, 'is-active': tabSelected('my') }"><a aria-selected="{{ tabSelected('my') }}" ng-click="tabNavigate('my')">My Territories</a></li>
+                    }
+                    @if (User.IsInRole("Mediator"))
+                    {
+                        <li ng-class="{ 'tabs-title': true, 'is-active': tabSelected('in') }"><a aria-selected="{{ tabSelected('in') }}" ng-click="tabNavigate('in')">Territories In</a></li>
+                        <li ng-class="{ 'tabs-title': true, 'is-active': tabSelected('out') }"><a aria-selected="{{ tabSelected('out') }}" ng-click="tabNavigate('out')">Territories Out</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row" ng-view></div>
+    </div>
+</div>
+
+@Html.ActionLink(" ", "JSON_TerritoryOutByUserId", "Home", new { }, new { id = "JSON_TerritoryOutByUserId", @class = "hide" })
+@Html.ActionLink(" ", "JSON_TerritoryOut", "Home", new { }, new { id = "JSON_TerritoryOut", @class = "hide" })
+@Html.ActionLink(" ", "JSON_TerritoryIn", "Home", new { }, new { id = "JSON_TerritoryIn", @class = "hide" })
+
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/home-index-bundle")
+    @Html.JSMinify("~/assets/js/home-index-templates")
+}

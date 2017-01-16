@@ -1,0 +1,47 @@
+﻿@model Jasper.Models.NotificationTag
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+
+    <h2>Details</h2>
+
+    <div>
+        <h4>NotificationTag</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.App.AppName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.App.AppName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TagLabel)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TagLabel)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TagValue)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TagValue)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "TagEdit", new { id = Model.TagId }) |
+        @Html.ActionLink("Back to List", "TagIndex", new { id = Model.AppId })
+    </p>
+
+
+</div>

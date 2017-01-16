@@ -1,0 +1,45 @@
+﻿@model Jasper.Models.NotificationApp
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row">
+    <h2>Details</h2>
+
+    <div>
+        <h4>NotificationApp</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.AppName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AppName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ConnectionString)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ConnectionString)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.HubName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.HubName)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "AppEdit", new { id = Model.AppId }) |
+        @Html.ActionLink("Back to List", "AppIndex")
+    </p>
+
+
+</div>

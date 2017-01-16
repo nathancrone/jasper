@@ -1,0 +1,49 @@
+﻿@model Jasper.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="row">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "registerFormValidate", name = "registerFormValidate", @class = "form-validate", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Create a new account.</h4>
+        <hr />
+            @Html.ValidationSummary("", new { })
+            <div class="row">
+                <div class="small-2 columns">
+                    @Html.LabelFor(m => m.Email, new { @class = "text-right middle" })
+                </div>
+                <div class="small-10 columns">
+                    @Html.TextBoxFor(m => m.Email, new { })
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-2 columns">
+                    @Html.LabelFor(m => m.Password, new { @class = "text-right middle" })
+                </div>
+                <div class="small-10 columns">
+                    @Html.PasswordFor(m => m.Password, new { })
+                </div>
+            </div>
+                <div class="row">
+                    <div class="small-2 columns">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "text-right middle" })
+                    </div>
+                    <div class="small-10 columns">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="medium-offset-2 medium-10 columns">
+                        <input type="submit" class="button" value="Register" />
+                    </div>
+                </div>
+    }
+</div>
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/account-register-bundle")
+}

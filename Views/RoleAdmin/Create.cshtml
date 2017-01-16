@@ -1,0 +1,54 @@
+﻿@model Jasper.Models.RoleViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row">
+    <h2>Create.</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Role.</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.Name, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.Description, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="medium-offset-2 medium-10 columns">
+                    <input type="submit" value="Create" class="button" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/roleadmin-create-bundle")
+}

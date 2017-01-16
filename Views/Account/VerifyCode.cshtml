@@ -1,0 +1,42 @@
+﻿@model Jasper.Models.VerifyCodeViewModel
+@{
+    ViewBag.Title = "Verify";
+}
+<div class="row">
+    <h2>@ViewBag.Title.</h2>
+
+    @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-validate", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("provider", @Model.Provider)
+        @Html.Hidden("rememberMe", @Model.RememberMe)
+        <h4>Enter verification code</h4>
+        <hr />
+        @Html.ValidationSummary("", new { })
+        <div class="row">
+            <div class="medium-2 columns">
+                @Html.LabelFor(m => m.Code, new { @class = "text-right middle" })
+            </div>
+            <div class="medium-10 columns">
+                @Html.TextBoxFor(m => m.Code, new { })
+            </div>
+        </div>
+        <div class="row">
+            <div class="medium-offset-2 medium-10 columns">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(m => m.RememberBrowser)
+                    @Html.LabelFor(m => m.RememberBrowser)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="medium-offset-2 medium-10 columns">
+                <input type="submit" class="button" value="Submit" />
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts {
+    @Html.JSMinify("~/assets/js/account-verifycode-bundle")
+}
