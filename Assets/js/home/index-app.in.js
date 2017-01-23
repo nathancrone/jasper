@@ -15,8 +15,6 @@
     .controller('InCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
 
         $scope.selectedTerritory = null;
-        $scope.selectedUser = null;
-        $scope.CheckOutDate = null;
 
         //get the territories
         data.territoryIn().then(function (data) {
@@ -24,33 +22,34 @@
         }, function () { });
 
         //when user clicks "check out"
-        $scope.checkOut = function (size, backdrop, closeOnClick) {
+        $scope.checkOut = function (selectedTerritory, size, backdrop, closeOnClick) {
 
+            $scope.selectedTerritory = selectedTerritory;
+            
             var params = {
                 templateUrl: 'views/index-template-incheckout.html',
                 resolve: {
                     selectedTerritory: function () {
                         return $scope.selectedTerritory;
-                    },
-                    selectedUser: function () {
-                        return $scope.selectedUser;
-                    },
-                    CheckOutDate: function () {
-                        return $scope.CheckOutDate;
                     }
                 },
-                controller: ['$scope', '$modalInstance', 'selectedTerritory', 'selectedUser', 'CheckOutDate', function ($scope, $modalInstance, selectedTerritory, selectedUser, CheckOutDate) {
+                controller: ['$scope', '$modalInstance', 'selectedTerritory', function ($scope, $modalInstance, selectedTerritory) {
 
+                    $scope.users = [];
                     $scope.selectedTerritory = selectedTerritory;
-                    $scope.selectedUser = selectedUser;
-                    $scope.CheckOutDate = CheckOutDate;
+                    $scope.data = { "selectedUser": null, "CheckOutDate": null };
+
+                    //get the users
+                    data.userAll().then(function (data) {
+                        $scope.users = data;
+                    }, function () { });
 
                     $scope.reposition = function () {
                         $modalInstance.reposition();
                     };
 
                     $scope.ok = function () {
-                        $modalInstance.close({ "selectedTerritory": $scope.selectedTerritory, "selectedUser": $scope.selectedUser, "CheckOutDate": CheckOutDate });
+                        $modalInstance.close({ "selectedTerritory": $scope.selectedTerritory, "selectedUser": $scope.data.selectedUser, "CheckOutDate": $scope.data.CheckOutDate });
                     };
 
                     $scope.cancel = function () {
@@ -75,7 +74,7 @@
 
             modalInstance.result.then(function (result) {
 
-                data.checkOut({ "TerritoryId": result.selectedTerritory.TerritoryId, "UserId": result.selectedUser.UserId, "CheckOutDate": result.CheckOutDate }).then(function (data) {
+                data.checkOut({ "TerritoryId": result.selectedTerritory.TerritoryId, "UserId": result.selectedUser.Id, "CheckOutDate": result.CheckOutDate }).then(function (data) {
                     
                     $scope.Response = data;
                     $scope.showSuccess = !data.Error;

@@ -11,7 +11,7 @@
         <tbody>
             <tr ng-repeat="t in territories | orderBy: ['CheckInDate', ['Territory.TerritoryCode']]">
                 <td>{{ t.Territory.TerritoryCode }}</td>
-                <td>{{ t.CheckInDate }}</td>
+                <td>{{ t.CheckInDate | date:'medium' }}</td>
                 <td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td>
                 <td class="text-center"><a ng-click="checkOut(t.Territory)" class="button">Check Out</a></td>
             </tr>

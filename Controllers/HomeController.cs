@@ -45,9 +45,46 @@ namespace Jasper.Controllers
 
                 //territories with no ledger entries that have a null checkin date
                 LinqResult = LinqResult.Union(context.Territories.Where(a => !a.LedgerEntries.Any(b => b.CheckInDate == null)));
-                
+
                 return this.JsonNet(await LinqResult.Select(a => new { Territory = a, CheckInDate = a.LedgerEntries.Max(b => b.CheckInDate) }).ToListAsync(), JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+        public async Task<JsonNetResult> JSON_UserAll()
+        {
+            using (var context = new AppContext())
+            {
+                return this.JsonNet(await context.Users.ToListAsync(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonNetResult> CheckOut(CheckOutViewModel data)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var context = new AppContext())
+                    {
+                        LedgerEntry entry = context.LedgerEntries.Create();
+
+                        entry.TerritoryId = data.TerritoryId;
+                        entry.UserId = data.UserId;
+                        entry.CheckOutDate = data.CheckOutDate;
+
+                        context.LedgerEntries.Add(entry);
+                        await context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return this.JsonNet(new { Error = true, Message = ex.Message });
+                }
+            }
+
+            return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
     }
 }

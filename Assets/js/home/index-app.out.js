@@ -14,7 +14,10 @@
 
     .controller('OutCtrl', ['$scope', '$location', '$route', '$routeParams', 'app.data', function ($scope, $location, $route, $routeParams, data) {
         
-
+        //get the territories
+        data.territoryOut().then(function (data) {
+            $scope.territories = data;
+        }, function () { });
 
     }]);
 

@@ -1,11 +1,34 @@
-﻿<h3>Check Out</h3>
-<p>Please enter information...</p>
+﻿<div class="panel panel-default">
 
-User: <select />
-Check Out Date: <input />
+    <div class="panel-heading">
+        Confirm
+    </div>
 
-<button class="button" ng-click="ok()">OK</button>
-<button class="button" ng-click="cancel()">Cancel</button>
+    <div class="panel-body">
+        <form>
+            <div class="form-group">
+                <label class="control-label">User</label>
+                <select class="form-control" ng-model="data.selectedUser" ng-options="u as u.UserName for u in users"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Check Out Date</label>
+                <input type="text" placeholder="check out date" required="" class="form-control ng-pristine ng-untouched" ng-model="data.CheckOutDate" ng-change="go()">
+            </div>
+        </form>
+    </div>
+
+    <div class="panel-footer">
+        <div class="clearfix">
+            <div class="pull-left">&nbsp;</div>
+            <div class="pull-right">
+                <button class="button" ng-click="ok()">OK</button>
+                <button class="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <button ng-click="cancel()" class="close-button" aria-label="Close reveal" type="button">
     <span aria-hidden="true">&times;</span>
 </button>

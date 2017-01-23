@@ -256,6 +256,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Models_Identity.cs" />
     <Compile Include="Models\Models_Territory.cs" />
+    <Compile Include="Models\ViewModels_Home.cs" />
     <Compile Include="Models\ViewModels_UserAdmin.cs" />
     <Compile Include="Models\ViewModels_RoleAdmin.cs" />
     <Compile Include="Models\ViewModels_Account.cs" />
