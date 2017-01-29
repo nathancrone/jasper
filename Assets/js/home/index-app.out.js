@@ -14,15 +14,17 @@
 
     .controller('OutCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
         
+        $scope.sortExpression = ['CheckOutDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
+
+        $scope.sortBy = function (expr) {
+            $scope.sortExpression = expr;
+        }
 
         //get the territories
         data.territoryOut().then(function (data) {
             $scope.territories = data;
         }, function () { });
-
-
-
 
 
         //when user clicks "check out"

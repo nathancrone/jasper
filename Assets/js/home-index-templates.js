@@ -15,7 +15,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('views/index-template-out.html',
-    '<div class="large-12 columns"><table class="hover"><thead><tr><th>Territory</th><th>First Name</th><th>Last Name</th><th>Check Out Date</th><th>&nbsp;</th><th>&nbsp;</th></tr></thead><tbody><tr ng-repeat="t in territories | orderBy: [\'CheckOutDate\', [\'Territory.TerritoryCode\']]"><td>{{ t.Territory.TerritoryCode }}</td><td>{{ t.User.FirstName }}</td><td>{{ t.User.LastName }}</td><td>{{ t.CheckOutDate | date:\'medium\' }}</td><td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td><td class="text-center"><a ng-click="checkIn(t.Territory)" class="button">Check In</a></td></tr></tbody></table></div>');
+    '<div class="large-12 columns"><table class="hover"><thead><tr><th ng-click="sortBy([\'Territory.TerritoryCode\'])">Territory</th><th ng-click="sortBy([\'User.FirstName\'])">First Name</th><th ng-click="sortBy([\'User.LastName\'])">Last Name</th><th ng-click="sortBy([\'CheckOutDate\', [\'Territory.TerritoryCode\']])">Check Out Date</th><th>&nbsp;</th><th>&nbsp;</th></tr></thead><tbody><tr ng-repeat="t in territories | orderBy: sortExpression"><td>{{ t.Territory.TerritoryCode }}</td><td>{{ t.User.FirstName }}</td><td>{{ t.User.LastName }}</td><td>{{ t.CheckOutDate | date:\'medium\' }}</td><td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td><td class="text-center"><a ng-click="checkIn(t.Territory)" class="button">Check In</a></td></tr></tbody></table></div>');
 }]);
 
 angular.module('app').run(['$templateCache', function($templateCache) {
