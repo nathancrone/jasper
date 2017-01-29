@@ -19,6 +19,26 @@
 
             <div class="row">
                 <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.FirstName, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.LastName, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="medium-2 columns">
                     @Html.LabelFor(model => model.Email, new { @class = "text-right middle" })
                 </div>
                 <div class="medium-10 columns">

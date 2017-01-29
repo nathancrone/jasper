@@ -53,12 +53,30 @@
 
         }
 
+        var _checkIn = function (data) {
+
+            var req = {
+                method: 'POST',
+                url: $("#CheckIn").attr("href"),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: $.param(data)
+            }
+
+            return $http(req).then(function (response) {
+                return response.data;
+            });
+
+        }
+
         return {
             territoryOutByUserId: _territoryOutByUserId,
             territoryOut: _territoryOut,
             territoryIn: _territoryIn,
             userAll: _userAll,
-            checkOut: _checkOut
+            checkOut: _checkOut, 
+            checkIn: _checkIn
         }
 
     }]);

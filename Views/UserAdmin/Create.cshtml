@@ -8,12 +8,28 @@
 
     <h2>@ViewBag.Title.</h2>
 
-    @using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-validate", role = "form" }))
+    @using (Html.BeginForm("Create", "UserAdmin", FormMethod.Post, new { @class = "form-validate", role = "form" }))
     {
         @Html.AntiForgeryToken()
         <h4>Create a new account.</h4>
         <hr />
         @Html.ValidationSummary("", new { })
+        <div class="row">
+            <div class="medium-2 columns">
+                @Html.LabelFor(m => m.FirstName, new { @class = "text-right middle" })
+            </div>
+            <div class="medium-10 columns">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="medium-2 columns">
+                @Html.LabelFor(m => m.LastName, new { @class = "text-right middle" })
+            </div>
+            <div class="medium-10 columns">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            </div>
+        </div>
         <div class="row">
             <div class="medium-2 columns">
                 @Html.LabelFor(m => m.Email, new { @class = "text-right middle" })

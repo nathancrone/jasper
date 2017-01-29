@@ -81,12 +81,14 @@
                     $scope.showError = data.Error;
                     $scope.alertMessage = data.Message;
 
+                    $route.reload();
+
                 }, function (data) {
 
                     $scope.Response = data;
                     $scope.showSuccess = false;
                     $scope.showError = true;
-                    $scope.alertMessage = "There was an error sending your notification.";
+                    $scope.alertMessage = "There was an error checking out the territory.";
 
                 });
 

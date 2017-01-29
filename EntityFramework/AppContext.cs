@@ -7,6 +7,11 @@ namespace Jasper.EntityFramework
 {
     public class AppContext : IdentityDbContext<AppUser>
     {
+        private static string GetConnection(string ConnectionString)
+        {
+            return ConnectionString.Replace("~", System.Web.HttpContext.Current.Server.MapPath("~"));
+        }
+
         //IdentityUser
         //IdentityRole
         //IdentityUserClaim
@@ -15,6 +20,7 @@ namespace Jasper.EntityFramework
 
         public AppContext() : base("name=JasperDB", throwIfV1Schema: false)
         {
+            Database.Connection.ConnectionString = GetConnection(Database.Connection.ConnectionString);
             Database.SetInitializer<AppContext>(null);
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
@@ -64,6 +70,8 @@ namespace Jasper.EntityFramework
             modelBuilder.Entity<LedgerEntry>()
                 .Property(x => x.UserId)
                 .IsRequired();
+
+            //CheckOutDate = c.DateTime(nullable: false, defaultValueSql: "GETDATE()"),
 
             //AppUser configuration
             modelBuilder.Entity<AppUser>().ToTable("tblUsers").Property(p => p.Id).HasColumnName("UserId");
