@@ -113,5 +113,13 @@ namespace Jasper.Controllers
 
             return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DownloadDb()
+        {
+            byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/App_Data/JasperDB.db"));
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, "JasperDB.db");
+        }
     }
 }

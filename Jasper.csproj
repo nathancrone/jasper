@@ -334,6 +334,8 @@
     <Content Include="Views\NotificationAdmin\TagEdit.cshtml" />
     <Content Include="Views\NotificationAdmin\TagIndex.cshtml" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\jspr - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\jspr - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
