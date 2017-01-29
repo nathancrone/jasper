@@ -180,6 +180,7 @@
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include="App_Data\Elmah\placeholder.txt" />
+    <Content Include="App_Data\JasperDB.db" />
     <Content Include="Assets\css\foundation.css" />
     <Content Include="Assets\css\foundation.min.css" />
     <Content Include="Assets\js\account-externalloginconfirmation-bundle.js" />
@@ -196,7 +197,6 @@
     <Content Include="Assets\js\account-sendcode-bundle.min.js" />
     <Content Include="Assets\js\account-verifycode-bundle.js" />
     <Content Include="Assets\js\account-verifycode-bundle.min.js" />
-    <Content Include="App_Data\JasperDB.db" />
     <None Include="Assets\js\account\externalloginconfirmation-validate.js" />
     <None Include="Assets\js\account\forgotpassword-validate.js" />
     <None Include="Assets\js\account\login-validate.js" />
