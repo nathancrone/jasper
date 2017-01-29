@@ -226,4 +226,4 @@ Migrations/
 Web.AppSettings.config
 
 #Ignore elmah log files
-App_Data/Elmah/*.xml
+App_Data/
