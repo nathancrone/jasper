@@ -215,6 +215,7 @@
     <None Include="Assets\js\home\index-template-in.html" />
     <None Include="Assets\js\home\index-template-my.html" />
     <None Include="Assets\js\home\index-template-out.html" />
+    <Content Include="Assets\js\home\index-template-mycheckin.html" />
     <Content Include="Assets\js\home\index-template-outcheckin.html" />
     <Content Include="Assets\js\home\index-template-incheckout.html" />
     <Content Include="Assets\js\manage-addphonenumber-bundle.js" />

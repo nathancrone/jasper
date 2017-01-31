@@ -1,14 +1,12 @@
 ﻿using Jasper.EntityFramework;
 using Jasper.Extensions;
-using System;
-using System.Linq;
-using System.Web.Mvc;
-using System.Data.Entity;
-using System.Threading.Tasks;
 using Jasper.Models;
-using Microsoft.Azure.NotificationHubs;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
+using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Jasper.Controllers
 {
@@ -18,6 +16,16 @@ namespace Jasper.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+
+        public async Task<JsonNetResult> JSON_TerritoryOutByUser()
+        {
+            using (var context = new AppContext())
+            {
+                string UserId = User.Identity.GetUserId();
+                return this.JsonNet(await context.LedgerEntries.Where(a => a.UserId == UserId && a.CheckInDate == null).Include(a => a.Territory).Include(a => a.User).ToListAsync(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         public async Task<JsonNetResult> JSON_TerritoryOutByUserId(string Id)

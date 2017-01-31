@@ -3,8 +3,8 @@
         <thead>
             <tr>
                 <th ng-click="sortBy(['Territory.TerritoryCode'])">Territory</th>
-                <th ng-click="sortBy(['User.FirstName'])">First Name</th>
-                <th ng-click="sortBy(['User.LastName'])">Last Name</th>
+                <th ng-click="sortBy(['User.FirstName', 'User.LastName', 'Territory.TerritoryCode'])">First Name</th>
+                <th ng-click="sortBy(['User.LastName', 'User.FirstName', 'Territory.TerritoryCode'])">Last Name</th>
                 <th ng-click="sortBy(['CheckOutDate', ['Territory.TerritoryCode']])">Check Out Date</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>

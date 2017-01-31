@@ -14,7 +14,12 @@
 
     .controller('InCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
 
+        $scope.sortExpression = ['CheckInDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
+
+        $scope.sortBy = function (expr) {
+            $scope.sortExpression = expr;
+        }
 
         //get the territories
         data.territoryIn().then(function (data) {

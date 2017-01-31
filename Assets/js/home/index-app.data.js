@@ -6,8 +6,8 @@
     .factory('app.data', ['$http', function ($http) {
 
         //get all the apps
-        var _territoryOutByUserId = function () {
-            return $http.get($("#JSON_TerritoryOutByUserId").attr("href"))
+        var _territoryOutByUser = function () {
+            return $http.get($("#JSON_TerritoryOutByUser").attr("href"))
 					.then(function (response) {
 					    return response.data;
 					})
@@ -71,7 +71,7 @@
         }
 
         return {
-            territoryOutByUserId: _territoryOutByUserId,
+            territoryOutByUser: _territoryOutByUser,
             territoryOut: _territoryOut,
             territoryIn: _territoryIn,
             userAll: _userAll,

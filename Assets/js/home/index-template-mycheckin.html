@@ -1,0 +1,25 @@
+﻿<div class="panel panel-default">
+
+    <div class="panel-heading">
+        Check In Territory - {{ selectedTerritory.TerritoryCode }}
+    </div>
+
+    <div class="panel-body">
+        <h3>Are you sure you want to check {{ selectedTerritory.TerritoryCode }} in?</h3>
+    </div>
+
+    <div class="panel-footer">
+        <div class="clearfix">
+            <div class="pull-left">&nbsp;</div>
+            <div class="pull-right">
+                <button class="button" ng-click="ok()">OK</button>
+                <button class="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<button ng-click="cancel()" class="close-button" aria-label="Close reveal" type="button">
+    <span aria-hidden="true">&times;</span>
+</button>

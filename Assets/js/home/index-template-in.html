@@ -2,14 +2,14 @@
     <table class="hover">
         <thead>
             <tr>
-                <th>Territory</th>
-                <th>Check In Date</th>
+                <th ng-click="sortBy(['Territory.TerritoryCode'])">Territory</th>
+                <th ng-click="sortBy(['CheckInDate', ['Territory.TerritoryCode']])">Check In Date</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="t in territories | orderBy: ['CheckInDate', ['Territory.TerritoryCode']]">
+            <tr ng-repeat="t in territories | orderBy: sortExpression">
                 <td>{{ t.Territory.TerritoryCode }}</td>
                 <td>{{ t.CheckInDate | date:'medium' }}</td>
                 <td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td>
