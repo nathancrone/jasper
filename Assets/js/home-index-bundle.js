@@ -39,6 +39,8 @@
 
     .factory('app.data', ['$http', function ($http) {
 
+        var _viewLink = $("#ViewTerritory").attr("href");
+
         //get all the apps
         var _territoryOutByUser = function () {
             return $http.get($("#JSON_TerritoryOutByUser").attr("href"))
@@ -136,7 +138,8 @@
             userAll: _userAll,
             checkOut: _checkOut,
             checkOutUser: _checkOutUser,
-            checkIn: _checkIn
+            checkIn: _checkIn,
+            viewLink: _viewLink
         }
 
     }]);
@@ -158,6 +161,7 @@
 
     .controller('InCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
 
+        $scope.viewLink = data.viewLink;
         $scope.sortExpression = ['CheckInDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
 
@@ -272,6 +276,7 @@
 
     .controller('MyCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
         
+        $scope.viewLink = data.viewLink;
         $scope.sortExpression = ['CheckOutDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
 
@@ -373,6 +378,7 @@
                 },
                 controller: ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                     
+                    $scope.viewLink = data.viewLink;
                     $scope.sortExpression = ['CheckInDate', ['Territory.TerritoryCode']];
                     $scope.selectedTerritory = null;
 
@@ -469,6 +475,7 @@
 
     .controller('OutCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
         
+        $scope.viewLink = data.viewLink;
         $scope.sortExpression = ['CheckOutDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
 

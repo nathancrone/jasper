@@ -14,6 +14,7 @@
 
     .controller('OutCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
         
+        $scope.viewLink = data.viewLink;
         $scope.sortExpression = ['CheckOutDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
 

@@ -21,7 +21,7 @@
                 <tr ng-repeat="t in territories | orderBy: sortExpression">
                     <td class="text-center large-text-left">{{ t.Territory.TerritoryCode }}</td>
                     <td class="text-center large-text-left">{{ t.CheckInDate | date:'medium' }}</td>
-                    <td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td>
+                    <td class="text-center"><a href="{{ viewLink + '?id=' + t.Territory.TerritoryId }}" class="button" target="_blank">View</a></td>
                     <td class="text-center"><a ng-click="selectTerritory(t.Territory)" class="button">Select</a></td>
                 </tr>
             </tbody>

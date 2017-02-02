@@ -171,7 +171,25 @@ namespace Jasper.Controllers
             return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
 
+        public async Task<ActionResult> ViewTerritory(int Id)
+        {
+            string Path = "";
 
+            try
+            {
+                using (var context = new AppContext())
+                {
+                    Territory T = await context.Territories.FindAsync(Id);
+                    Path = T.Path;
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.JsonNet(new { Error = true, Message = ex.Message });
+            }
+            
+            return (Path == "") ? Redirect("http://gvty.azurewebsites.net/") : Redirect(string.Format("http://gvty.azurewebsites.net/Home/Map?path={0}", Server.UrlEncode(Path)));
+        }
 
         [Authorize(Roles = "Admin")]
         public ActionResult DownloadDb()

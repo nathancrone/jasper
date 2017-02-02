@@ -14,6 +14,7 @@
 
     .controller('MyCtrl', ['$scope', '$location', '$route', '$routeParams', '$modal', 'app.data', function ($scope, $location, $route, $routeParams, $modal, data) {
         
+        $scope.viewLink = data.viewLink;
         $scope.sortExpression = ['CheckOutDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
 
@@ -115,6 +116,7 @@
                 },
                 controller: ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                     
+                    $scope.viewLink = data.viewLink;
                     $scope.sortExpression = ['CheckInDate', ['Territory.TerritoryCode']];
                     $scope.selectedTerritory = null;
 

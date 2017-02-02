@@ -5,6 +5,8 @@
 
     .factory('app.data', ['$http', function ($http) {
 
+        var _viewLink = $("#ViewTerritory").attr("href");
+
         //get all the apps
         var _territoryOutByUser = function () {
             return $http.get($("#JSON_TerritoryOutByUser").attr("href"))
@@ -102,7 +104,8 @@
             userAll: _userAll,
             checkOut: _checkOut,
             checkOutUser: _checkOutUser,
-            checkIn: _checkIn
+            checkIn: _checkIn,
+            viewLink: _viewLink
         }
 
     }]);
