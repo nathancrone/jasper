@@ -1,5 +1,5 @@
 ﻿<div class="large-12 columns">
-    <table class="hover">
+    <table class="hover stack">
         <thead>
             <tr>
                 <th ng-click="sortBy(['Territory.TerritoryCode'])">Territory</th>
@@ -12,10 +12,10 @@
         </thead>
         <tbody>
             <tr ng-repeat="t in territories | orderBy: sortExpression">
-                <td>{{ t.Territory.TerritoryCode }}</td>
-                <td>{{ t.User.FirstName }}</td>
-                <td>{{ t.User.LastName }}</td>
-                <td>{{ t.CheckOutDate | date:'medium' }}</td>
+                <td class="text-center large-text-left">{{ t.Territory.TerritoryCode }}</td>
+                <td class="text-center large-text-left">{{ t.User.FirstName }}</td>
+                <td class="text-center large-text-left">{{ t.User.LastName }}</td>
+                <td class="text-center large-text-left">{{ t.CheckOutDate | date:'medium' }}</td>
                 <td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td>
                 <td class="text-center"><a ng-click="checkIn(t.Territory)" class="button">Check In</a></td>
             </tr>

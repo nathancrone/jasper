@@ -13,6 +13,12 @@ namespace Jasper.Models
         public DateTime? CheckOutDate { get; set; }
     }
 
+    public class CheckOutUserViewModel
+    {
+        public int TerritoryId { get; set; }
+        public DateTime? CheckOutDate { get; set; }
+    }
+
     public class CheckInViewModel
     {
         public int TerritoryId { get; set; }

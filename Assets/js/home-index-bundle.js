@@ -63,6 +63,13 @@
 					})
         };
 
+        var _territoryInOldest = function () {
+            return $http.get($("#JSON_TerritoryInOldest").attr("href"))
+					.then(function (response) {
+					    return response.data;
+					})
+        };
+
         var _userAll = function () {
             return $http.get($("#JSON_UserAll").attr("href"))
 					.then(function (response) {
@@ -75,6 +82,23 @@
             var req = {
                 method: 'POST',
                 url: $("#CheckOut").attr("href"),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: $.param(data)
+            }
+
+            return $http(req).then(function (response) {
+                return response.data;
+            });
+
+        }
+
+        var _checkOutUser = function (data) {
+
+            var req = {
+                method: 'POST',
+                url: $("#CheckOutUser").attr("href"),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -108,8 +132,10 @@
             territoryOutByUser: _territoryOutByUser,
             territoryOut: _territoryOut,
             territoryIn: _territoryIn,
+            territoryInOldest: _territoryInOldest, 
             userAll: _userAll,
-            checkOut: _checkOut, 
+            checkOut: _checkOut,
+            checkOutUser: _checkOutUser,
             checkIn: _checkIn
         }
 
@@ -249,6 +275,10 @@
         $scope.sortExpression = ['CheckOutDate', ['Territory.TerritoryCode']];
         $scope.selectedTerritory = null;
 
+        $scope.sortBy = function (expr) {
+            $scope.sortExpression = expr;
+        }
+
         //get the territories
         data.territoryOutByUser().then(function (data) {
             $scope.ledgerEntries = data;
@@ -322,6 +352,103 @@
 
             });
         };
+
+
+
+
+
+
+
+
+
+
+
+
+        //when user clicks "check out"
+        $scope.checkOut = function (size, backdrop, closeOnClick) {
+            
+            var params = {
+                templateUrl: 'views/index-template-mycheckout.html',
+                resolve: {
+                },
+                controller: ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                    
+                    $scope.sortExpression = ['CheckInDate', ['Territory.TerritoryCode']];
+                    $scope.selectedTerritory = null;
+
+                    $scope.sortBy = function (expr) {
+                        $scope.sortExpression = expr;
+                    }
+
+                    $scope.selectTerritory = function (territory) {
+                        $scope.selectedTerritory = territory;
+                    }
+
+                    //get the territories
+                    data.territoryInOldest().then(function (data) {
+                        $scope.territories = data;
+                    }, function () { });
+
+                    $scope.reposition = function () {
+                        $modalInstance.reposition();
+                    };
+
+                    $scope.ok = function () {
+                        $modalInstance.close({ "selectedTerritory": $scope.selectedTerritory, "CheckOutDate": null });
+                    };
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+                }]
+            };
+
+            if (angular.isDefined(closeOnClick)) {
+                params.closeOnClick = closeOnClick;
+            }
+
+            if (angular.isDefined(size)) {
+                params.size = size;
+            }
+
+            if (angular.isDefined(backdrop)) {
+                params.backdrop = backdrop;
+            }
+
+            var modalInstance = $modal.open(params);
+
+            modalInstance.result.then(function (result) {
+
+                data.checkOutUser({ "TerritoryId": result.selectedTerritory.TerritoryId, "CheckOutDate": result.CheckOutDate }).then(function (data) {
+
+                    $scope.Response = data;
+                    $scope.showSuccess = !data.Error;
+                    $scope.showError = data.Error;
+                    $scope.alertMessage = data.Message;
+
+                    $route.reload();
+
+                }, function (data) {
+
+                    $scope.Response = data;
+                    $scope.showSuccess = false;
+                    $scope.showError = true;
+                    $scope.alertMessage = "There was an error checking out the territory.";
+
+                });
+
+            }, function () {
+
+            });
+        };
+
+
+
+
+
+
+
+
 
     }]);
 

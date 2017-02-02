@@ -29,6 +29,13 @@
 					})
         };
 
+        var _territoryInOldest = function () {
+            return $http.get($("#JSON_TerritoryInOldest").attr("href"))
+					.then(function (response) {
+					    return response.data;
+					})
+        };
+
         var _userAll = function () {
             return $http.get($("#JSON_UserAll").attr("href"))
 					.then(function (response) {
@@ -41,6 +48,23 @@
             var req = {
                 method: 'POST',
                 url: $("#CheckOut").attr("href"),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: $.param(data)
+            }
+
+            return $http(req).then(function (response) {
+                return response.data;
+            });
+
+        }
+
+        var _checkOutUser = function (data) {
+
+            var req = {
+                method: 'POST',
+                url: $("#CheckOutUser").attr("href"),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -74,8 +98,10 @@
             territoryOutByUser: _territoryOutByUser,
             territoryOut: _territoryOut,
             territoryIn: _territoryIn,
+            territoryInOldest: _territoryInOldest, 
             userAll: _userAll,
-            checkOut: _checkOut, 
+            checkOut: _checkOut,
+            checkOutUser: _checkOutUser,
             checkIn: _checkIn
         }
 

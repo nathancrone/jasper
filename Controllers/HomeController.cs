@@ -28,6 +28,8 @@ namespace Jasper.Controllers
             }
         }
 
+
+
         public async Task<JsonNetResult> JSON_TerritoryOutByUserId(string Id)
         {
             using (var context = new AppContext())
@@ -55,6 +57,21 @@ namespace Jasper.Controllers
                 LinqResult = LinqResult.Union(context.Territories.Where(a => !a.InActive && !a.LedgerEntries.Any(b => b.CheckInDate == null)));
 
                 return this.JsonNet(await LinqResult.Select(a => new { Territory = a, CheckInDate = a.LedgerEntries.Max(b => b.CheckInDate) }).ToListAsync(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<JsonNetResult> JSON_TerritoryInOldest()
+        {
+            using (var context = new AppContext())
+            {
+                //territories with no ledger entries
+                var LinqResult = context.Territories.Where(a => !a.InActive && !a.LedgerEntries.Any());
+
+                //territories with ledger entries that have a null checkin date
+                LinqResult = LinqResult.Union(context.Territories.Where(a => !a.InActive && !a.LedgerEntries.Any(b => b.CheckInDate == null)));
+                
+                //sort by the checkin date and take take the top 3
+                return this.JsonNet(await LinqResult.Select(a => new { Territory = a, CheckInDate = a.LedgerEntries.Max(b => b.CheckInDate) }).OrderBy(x => x.CheckInDate).Take(3).ToListAsync(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -96,6 +113,38 @@ namespace Jasper.Controllers
             return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
 
+
+        [HttpPost]
+        public async Task<JsonNetResult> CheckOutUser(CheckOutUserViewModel data)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string UserId = User.Identity.GetUserId();
+
+                    using (var context = new AppContext())
+                    {
+                        LedgerEntry entry = context.LedgerEntries.Create();
+
+                        entry.TerritoryId = data.TerritoryId;
+                        entry.UserId = UserId;
+                        entry.CheckOutDate = (data.CheckOutDate == null) ? DateTime.Now : data.CheckOutDate;
+
+                        context.LedgerEntries.Add(entry);
+                        await context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return this.JsonNet(new { Error = true, Message = ex.Message });
+                }
+            }
+
+            return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
+        }
+
+
         [HttpPost]
         public async Task<JsonNetResult> CheckIn(CheckInViewModel data)
         {
@@ -121,6 +170,7 @@ namespace Jasper.Controllers
 
             return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
+
 
 
         [Authorize(Roles = "Admin")]

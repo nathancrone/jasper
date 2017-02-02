@@ -1,0 +1,45 @@
+﻿<div class="panel panel-default">
+
+    <div ng-hide="selectedTerritory" class="panel-heading">
+        Check Out Territory
+    </div>
+    <div ng-show="selectedTerritory" class="panel-heading">
+        Check Out Territory - {{ selectedTerritory.TerritoryCode }}
+    </div>
+
+    <div class="panel-body">
+        <table class="hover stack">
+            <thead>
+                <tr>
+                    <th ng-click="sortBy(['Territory.TerritoryCode'])">Territory</th>
+                    <th ng-click="sortBy(['CheckInDate', ['Territory.TerritoryCode']])">Check In Date</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in territories | orderBy: sortExpression">
+                    <td class="text-center large-text-left">{{ t.Territory.TerritoryCode }}</td>
+                    <td class="text-center large-text-left">{{ t.CheckInDate | date:'medium' }}</td>
+                    <td class="text-center"><a href="http://www.google.com/" class="button" target="_blank">View</a></td>
+                    <td class="text-center"><a ng-click="selectTerritory(t.Territory)" class="button">Select</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <div class="clearfix">
+            <div class="pull-left">&nbsp;</div>
+            <div class="pull-right">
+                <button class="button" ng-click="ok()">OK</button>
+                <button class="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<button ng-click="cancel()" class="close-button" aria-label="Close reveal" type="button">
+    <span aria-hidden="true">&times;</span>
+</button>
