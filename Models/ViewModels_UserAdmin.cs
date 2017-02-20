@@ -21,6 +21,8 @@ namespace Jasper.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        public string Password { get; set; }
+
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }

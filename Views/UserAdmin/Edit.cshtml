@@ -46,6 +46,17 @@
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "is-invalid-label form-error is-visible" })
                 </div>
             </div>
+
+            <div class="row">
+                <div class="medium-2 columns">
+                    @Html.LabelFor(model => model.Password, new { @class = "text-right middle" })
+                </div>
+                <div class="medium-10 columns">
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "is-invalid-label form-error is-visible" })
+                </div>
+            </div>
+
             <div class="row">
                 <div class="medium-2 columns">
                     @Html.Label("Roles", new { @class = "text-right middle" })

@@ -154,8 +154,24 @@ namespace Jasper.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,Password")] EditUserViewModel editUser, params string[] selectedRole)
         {
+
+            EditUserViewModel userViewModel = new EditUserViewModel()
+            {
+                Id = editUser.Id,
+                Email = editUser.Email,
+                FirstName = editUser.FirstName,
+                LastName = editUser.LastName,
+                RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+                {
+                    Selected = selectedRole.Contains(x.Name),
+                    Text = x.Name,
+                    Value = x.Name
+                })
+            };
+
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByIdAsync(editUser.Id);
@@ -174,23 +190,51 @@ namespace Jasper.Controllers
                 selectedRole = selectedRole ?? new string[] { };
 
                 var result = await UserManager.AddUserToRolesAsync(user.Id, selectedRole.Except(userRoles).ToList<string>());
-
+                
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());
-                    return View();
+                    return View(userViewModel);
                 }
                 result = await UserManager.RemoveUserFromRolesAsync(user.Id, userRoles.Except(selectedRole).ToList<string>());
 
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());
-                    return View();
+                    return View(userViewModel);
                 }
+
+                //if a password was spedified
+                if (!string.IsNullOrEmpty(editUser.Password))
+                {
+                    //remove existing password
+                    result = await UserManager.RemovePasswordAsync(user.Id);
+
+                    //if it did not succeed
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", result.Errors.First());
+                        return View(userViewModel);
+                    }
+
+                    //add the new password
+                    if (result.Succeeded)
+                    {
+                        result = await UserManager.AddPasswordAsync(user.Id, editUser.Password);
+                    }
+
+                    //if it did not succeed
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", result.Errors.First());
+                        return View(userViewModel);
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "Something failed.");
-            return View();
+            return View(userViewModel);
         }
 
         //
