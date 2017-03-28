@@ -539,6 +539,60 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <Line Name="Line1">
+                          <Top>0in</Top>
+                          <Left>1.6in</Left>
+                          <Height>0.5in</Height>
+                          <Width>0in</Width>
+                          <ZIndex>15</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Dashed</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                          </Style>
+                        </Line>
+                        <Line Name="Line2">
+                          <Left>3.2in</Left>
+                          <Height>0.5in</Height>
+                          <Width>0in</Width>
+                          <ZIndex>16</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Dashed</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                          </Style>
+                        </Line>
+                        <Line Name="Line3">
+                          <Left>4.8in</Left>
+                          <Height>0.5in</Height>
+                          <Width>0in</Width>
+                          <ZIndex>17</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Dashed</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                          </Style>
+                        </Line>
+                        <Line Name="Line4">
+                          <Top>0in</Top>
+                          <Left>6.4in</Left>
+                          <Height>0.5in</Height>
+                          <Width>0in</Width>
+                          <ZIndex>18</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Dashed</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                          </Style>
+                        </Line>
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Style>
