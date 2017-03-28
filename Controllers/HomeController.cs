@@ -2,8 +2,11 @@
 using Jasper.Extensions;
 using Jasper.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.Reporting.WebForms;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -196,6 +199,109 @@ namespace Jasper.Controllers
         {
             byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/App_Data/JasperDB.db"));
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, "JasperDB.db");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Report()
+        {
+            using (var context = new AppContext())
+            {
+                var LinqResult = context.Territories.Where(a => !a.InActive && !a.LedgerEntries.Any());
+                LinqResult = LinqResult.Union(context.Territories.Where(a => !a.InActive).Include(a => a.LedgerEntries).Include(a => a.LedgerEntries.Select(b => b.User)));
+
+                var data1 = await LinqResult.OrderBy(a => a.TerritoryCode).Skip(0).Take(5).Select(a => new { TerritoryCode = a.TerritoryCode, LedgerEntries = a.LedgerEntries.Select(b => new { FirstName = b.User.FirstName, LastName = b.User.LastName, CheckOutDate = b.CheckOutDate, CheckInDate = b.CheckInDate }) }).ToListAsync();
+
+                List <ReportLedgerData> data2 = new List<ReportLedgerData>();
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+                data2.Add(new ReportLedgerData());
+
+                List<ReportParameter> ReportParams = new List<ReportParameter>();
+                int Index1 = 0;
+                foreach (var x in data1.ToList())
+                {
+                    ReportParams.Add(new ReportParameter(string.Format("Col{0}_Header", Index1 + 1), x.TerritoryCode.ToUpper()));
+
+                    int Index2 = 0;
+                    foreach (var y in x.LedgerEntries.ToList().OrderBy(a => a.CheckOutDate))
+                    {
+                        if (Index1 == 0)
+                        {
+                            data2[Index2].Col1_Publisher = string.Format("{0} {1}", y.FirstName, y.LastName);
+                            data2[Index2].Col1_DateOut = string.Format("{0:MM/dd/yyyy}", y.CheckOutDate);
+                            data2[Index2].Col1_DateIn = string.Format("{0:MM/dd/yyyy}", y.CheckInDate);
+                        }
+                        else if (Index1 == 1)
+                        {
+                            data2[Index2].Col2_Publisher = string.Format("{0} {1}", y.FirstName, y.LastName);
+                            data2[Index2].Col2_DateOut = string.Format("{0:MM/dd/yyyy}", y.CheckOutDate);
+                            data2[Index2].Col2_DateIn = string.Format("{0:MM/dd/yyyy}", y.CheckInDate);
+                        }
+                        else if (Index1 == 2)
+                        {
+                            data2[Index2].Col3_Publisher = string.Format("{0} {1}", y.FirstName, y.LastName);
+                            data2[Index2].Col3_DateOut = string.Format("{0:MM/dd/yyyy}", y.CheckOutDate);
+                            data2[Index2].Col3_DateIn = string.Format("{0:MM/dd/yyyy}", y.CheckInDate);
+                        }
+                        else if (Index1 == 3)
+                        {
+                            data2[Index2].Col4_Publisher = string.Format("{0} {1}", y.FirstName, y.LastName);
+                            data2[Index2].Col4_DateOut = string.Format("{0:MM/dd/yyyy}", y.CheckOutDate);
+                            data2[Index2].Col4_DateIn = string.Format("{0:MM/dd/yyyy}", y.CheckInDate);
+                        }
+                        else if (Index1 == 4)
+                        {
+                            data2[Index2].Col5_Publisher = string.Format("{0} {1}", y.FirstName, y.LastName);
+                            data2[Index2].Col5_DateOut = string.Format("{0:MM/dd/yyyy}", y.CheckOutDate);
+                            data2[Index2].Col5_DateIn = string.Format("{0:MM/dd/yyyy}", y.CheckInDate);
+                        }
+                        Index2++;
+                    }
+                    Index1++;
+                }
+
+                var reportDataSource = new ReportDataSource { Name = "DataSet1", Value = data2 };
+
+                ReportViewer viewer = new ReportViewer();
+                viewer.ProcessingMode = ProcessingMode.Local;
+                viewer.LocalReport.ReportEmbeddedResource = "Jasper.ReportLedger.rdlc";
+
+                viewer.LocalReport.SetParameters(ReportParams.ToArray());
+
+                viewer.LocalReport.DataSources.Clear();
+                viewer.LocalReport.DataSources.Add(reportDataSource);
+                viewer.LocalReport.Refresh();
+
+                // Variables
+                Warning[] warnings;
+                string[] streamIds;
+                string mimeType = string.Empty;
+                string encoding = string.Empty;
+                string extension = string.Empty;
+                byte[] bytes = viewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+
+                MemoryStream PdfStream = new MemoryStream();
+
+                try
+                {
+                    PdfStream.Write(bytes, 0, bytes.Length);
+                    PdfStream.Flush();
+                    PdfStream.Position = 0;
+                    return File(PdfStream, "application/pdf", "Report.pdf");
+                }
+                catch
+                {
+                    PdfStream.Dispose();
+                    throw;
+                }
+            }
         }
     }
 }
