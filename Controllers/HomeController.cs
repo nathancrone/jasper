@@ -212,16 +212,6 @@ namespace Jasper.Controllers
                 var data1 = await LinqResult.OrderBy(a => a.TerritoryCode).Skip(0).Take(5).Select(a => new { TerritoryCode = a.TerritoryCode, LedgerEntries = a.LedgerEntries.Select(b => new { FirstName = b.User.FirstName, LastName = b.User.LastName, CheckOutDate = b.CheckOutDate, CheckInDate = b.CheckInDate }) }).ToListAsync();
 
                 List <ReportLedgerData> data2 = new List<ReportLedgerData>();
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
-                data2.Add(new ReportLedgerData());
 
                 List<ReportParameter> ReportParams = new List<ReportParameter>();
                 int Index1 = 0;
@@ -232,6 +222,11 @@ namespace Jasper.Controllers
                     int Index2 = 0;
                     foreach (var y in x.LedgerEntries.ToList().OrderBy(a => a.CheckOutDate))
                     {
+                        if (data2.Count() < (Index2 + 1))
+                        {
+                            data2.Add(new ReportLedgerData());
+                        }
+
                         if (Index1 == 0)
                         {
                             data2[Index2].Col1_Publisher = string.Format("{0} {1}", y.FirstName, y.LastName);
