@@ -96,6 +96,23 @@
 
         }
 
+        var _reWork = function (data) {
+
+            var req = {
+                method: 'POST',
+                url: $("#Rework").attr("href"),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: $.param(data)
+            }
+
+            return $http(req).then(function (response) {
+                return response.data;
+            });
+
+        }
+
         return {
             territoryOutByUser: _territoryOutByUser,
             territoryOut: _territoryOut,
@@ -105,6 +122,7 @@
             checkOut: _checkOut,
             checkOutUser: _checkOutUser,
             checkIn: _checkIn,
+            reWork: _reWork, 
             viewLink: _viewLink
         }
 

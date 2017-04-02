@@ -20,8 +20,6 @@ namespace Jasper.Controllers
         {
             return View();
         }
-
-
         public async Task<JsonNetResult> JSON_TerritoryOutByUser()
         {
             using (var context = new AppContext())
@@ -30,8 +28,6 @@ namespace Jasper.Controllers
                 return this.JsonNet(await context.LedgerEntries.Where(a => a.UserId == UserId && a.CheckInDate == null).Include(a => a.Territory).Include(a => a.User).ToListAsync(), JsonRequestBehavior.AllowGet);
             }
         }
-
-
 
         public async Task<JsonNetResult> JSON_TerritoryOutByUserId(string Id)
         {
@@ -77,8 +73,7 @@ namespace Jasper.Controllers
                 return this.JsonNet(await LinqResult.Select(a => new { Territory = a, CheckInDate = a.LedgerEntries.Max(b => b.CheckInDate) }).OrderBy(x => x.CheckInDate).Take(3).ToListAsync(), JsonRequestBehavior.AllowGet);
             }
         }
-
-
+        
         public async Task<JsonNetResult> JSON_UserAll()
         {
             using (var context = new AppContext())
@@ -115,8 +110,7 @@ namespace Jasper.Controllers
 
             return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
-
-
+        
         [HttpPost]
         public async Task<JsonNetResult> CheckOutUser(CheckOutUserViewModel data)
         {
@@ -146,8 +140,7 @@ namespace Jasper.Controllers
 
             return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
         }
-
-
+        
         [HttpPost]
         public async Task<JsonNetResult> CheckIn(CheckInViewModel data)
         {
@@ -161,6 +154,42 @@ namespace Jasper.Controllers
                         if (entry != null)
                         {
                             entry.CheckInDate = (data.CheckInDate == null) ? DateTime.Now : data.CheckInDate;
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return this.JsonNet(new { Error = true, Message = ex.Message });
+                }
+            }
+
+            return this.JsonNet(new { Error = false, Message = "The territory was checked out." });
+        }
+
+        [HttpPost]
+        public async Task<JsonNetResult> Rework(ReworkViewModel data)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string UserId = User.Identity.GetUserId();
+
+                    using (var context = new AppContext())
+                    {
+                        LedgerEntry entry1 = await context.LedgerEntries.OrderByDescending(x => x.CheckOutDate).SingleOrDefaultAsync(x => x.TerritoryId == data.TerritoryId && x.UserId == UserId && x.CheckInDate == null);
+                        if (entry1 != null)
+                        {
+                            entry1.CheckInDate = DateTime.Now;
+                            await context.SaveChangesAsync();
+                            
+                            LedgerEntry entry2 = context.LedgerEntries.Create();
+                            entry2.TerritoryId = data.TerritoryId;
+                            entry2.UserId = UserId;
+                            entry2.CheckOutDate = DateTime.Now;
+
+                            context.LedgerEntries.Add(entry2);
                             await context.SaveChangesAsync();
                         }
                     }

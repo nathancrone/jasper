@@ -130,6 +130,23 @@
 
         }
 
+        var _reWork = function (data) {
+
+            var req = {
+                method: 'POST',
+                url: $("#Rework").attr("href"),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: $.param(data)
+            }
+
+            return $http(req).then(function (response) {
+                return response.data;
+            });
+
+        }
+
         return {
             territoryOutByUser: _territoryOutByUser,
             territoryOut: _territoryOut,
@@ -139,6 +156,7 @@
             checkOut: _checkOut,
             checkOutUser: _checkOutUser,
             checkIn: _checkIn,
+            reWork: _reWork, 
             viewLink: _viewLink
         }
 
@@ -289,7 +307,7 @@
             $scope.ledgerEntries = data;
         }, function () { });
 
-        //when user clicks "check out"
+        //when user clicks "check in"
         $scope.checkIn = function (selectedTerritory, size, backdrop, closeOnClick) {
 
             $scope.selectedTerritory = selectedTerritory;
@@ -361,7 +379,74 @@
 
 
 
+        //when user clicks "rework"
+        $scope.reWork = function (selectedTerritory, size, backdrop, closeOnClick) {
 
+            $scope.selectedTerritory = selectedTerritory;
+
+            var params = {
+                templateUrl: 'views/index-template-myrework.html',
+                resolve: {
+                    selectedTerritory: function () {
+                        return $scope.selectedTerritory;
+                    }
+                },
+                controller: ['$scope', '$modalInstance', 'selectedTerritory', function ($scope, $modalInstance, selectedTerritory) {
+
+                    $scope.selectedTerritory = selectedTerritory;
+
+                    $scope.reposition = function () {
+                        $modalInstance.reposition();
+                    };
+
+                    $scope.ok = function () {
+                        $modalInstance.close({ "selectedTerritory": $scope.selectedTerritory });
+                    };
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+                }]
+            };
+
+            if (angular.isDefined(closeOnClick)) {
+                params.closeOnClick = closeOnClick;
+            }
+
+            if (angular.isDefined(size)) {
+                params.size = size;
+            }
+
+            if (angular.isDefined(backdrop)) {
+                params.backdrop = backdrop;
+            }
+
+            var modalInstance = $modal.open(params);
+
+            modalInstance.result.then(function (result) {
+
+                data.reWork({ "TerritoryId": result.selectedTerritory.TerritoryId }).then(function (data) {
+
+                    $scope.Response = data;
+                    $scope.showSuccess = !data.Error;
+                    $scope.showError = data.Error;
+                    $scope.alertMessage = data.Message;
+
+                    $route.reload();
+
+                }, function (data) {
+
+                    $scope.Response = data;
+                    $scope.showSuccess = false;
+                    $scope.showError = true;
+                    $scope.alertMessage = "There was an error attempting to rework the territory.";
+
+                });
+
+            }, function () {
+
+            });
+        };
 
 
 

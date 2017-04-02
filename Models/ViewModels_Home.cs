@@ -24,4 +24,9 @@ namespace Jasper.Models
         public int TerritoryId { get; set; }
         public DateTime? CheckInDate { get; set; }
     }
+
+    public class ReworkViewModel
+    {
+        public int TerritoryId { get; set; }
+    }
 }
