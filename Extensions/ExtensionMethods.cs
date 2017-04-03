@@ -85,7 +85,7 @@ namespace Jasper.Extensions
             {
                 sb.Append(".min");
             }
-            sb.Append(".js\"></script>");
+            sb.Append(string.Format(".js?c={0}\"></script>", ConfigurationManager.AppSettings.Get("Cache")));
 
             //render the resulting script tag
             return MvcHtmlString.Create(sb.ToString());
